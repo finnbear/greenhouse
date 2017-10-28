@@ -9,15 +9,15 @@ void setup() {
   Serial.begin(9600);
 
   Serial.println("Beginning EEPROM...");
-  EEPROM.begin(128);
+  EEPROM.begin(sizeof(Settings));
 
-  Settings settings = {"SSID", "PASS"};
+  Settings settings = {"ssid", "pass"};
 
   Serial.println("Writting settings to EEPROM...");
   EEPROM.put(0, settings);
 
-  //Serial.println("Commiting EEPROM...");
-  //EEPROM.commit();
+  Serial.println("Commiting EEPROM...");
+  EEPROM.commit();
 
   Serial.println("Checking EEPROM...");
   for (int i = 0; i < 128; i++) {
