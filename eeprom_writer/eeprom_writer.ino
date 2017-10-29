@@ -3,6 +3,8 @@
 struct Settings {
   char ssid[32];
   char pass[32];
+  char channel[7];
+  char key[17];
 };
 
 void setup() {
@@ -11,7 +13,7 @@ void setup() {
   Serial.println("Beginning EEPROM...");
   EEPROM.begin(sizeof(Settings));
 
-  Settings settings = {"ssid", "pass"};
+  Settings settings = {"ssid", "pass", "channel", "key"};
 
   Serial.println("Writting settings to EEPROM...");
   EEPROM.put(0, settings);
@@ -20,7 +22,7 @@ void setup() {
   EEPROM.commit();
 
   Serial.println("Checking EEPROM...");
-  for (int i = 0; i < 128; i++) {
+  for (int i = 0; i < sizeof(Settings); i++) {
     Serial.write(EEPROM.read(i));
   }
 }
