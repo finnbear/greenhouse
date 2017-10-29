@@ -14,6 +14,8 @@ void setLed(byte red, byte green, byte blue) {
   led.show();
 }
 
+ADC_MODE(ADC_VCC);
+
 struct Settings {
   char ssid[32];
   char pass[32];
@@ -45,13 +47,17 @@ void loop() {
 
     // Read onboard Si7021
     ThingSpeak.setField(2, onboardSi7021.getRH());
-    ThingSpeak.setField(1, round((onboardSi7021.getTemp() + 273.15f) * 100) / 100.0f);
+    ThingSpeak.setField(1, onboardSi7021.getTemp() + 273.15f);
+
+    ThingSpeak.setField(7, WiFi.RSSI());
+    ThingSpeak.setField(8, ESP.getVcc() / 1000.0f);
+    
 
     ThingSpeak.writeFields(atol(settings.channel), settings.key);
 
     setLed(0, 0, 0);
 
-    delay(30000);
+    delay(15000);
   } else {
     Serial.println("Connecting...");
     Serial.print("SSID: ");
